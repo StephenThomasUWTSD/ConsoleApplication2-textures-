@@ -478,11 +478,8 @@ int main(int argc, char** argv)
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
 	glutInitWindowSize(800, 800);
 	glutInitWindowPosition(100, 100);
-	
-	//glutCreateWindow("3D house");
 	glutCreateWindow(argv[0]);
-	//glGetString(GL_VERSION);
-	//glGetError();
+	
 	init();
 	glutDisplayFunc(display);
 	glutReshapeFunc(reshape);

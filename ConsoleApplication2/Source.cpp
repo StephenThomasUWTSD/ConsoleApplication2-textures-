@@ -1,3 +1,4 @@
+using namespace std;
 #include <iostream>
 #include <stdlib.h>
 #include <math.h>
@@ -11,11 +12,11 @@
 ////// Texture Information
 BITMAPINFOHEADER bitmapInfoHeader;	// bitmap info header (needs windows.h to define type
 unsigned char*bitmapData;			// the texture data
-static GLuint texnum[2];
+static GLuint texnum[2];// array of 2 texture object names
 float globangle = 0;
 unsigned char *LoadBitmapFile(char *filename, BITMAPINFOHEADER *bitmapInfoHeader);
-void drawText(const char *text, int length, int x, int y);
-int WriteBitmapFile(char *filename, int width, int height, unsigned char *imageData);// array of 2 texture object names
+
+int WriteBitmapFile(char *filename, int width, int height, unsigned char *imageData);
 const int GRID_WIDTH = 4;
 const int GRID_HEIGHT = 4;
 void init(void);
@@ -25,8 +26,9 @@ void drawBox(float w, float h, float l);
 void reshape(int w, int h);
 void spinSink();
 void cubeSelectandLoop();
+
+void drawText(const char *text, int length, int x, int y);
 void render(void);
-using namespace std;
 
 struct Box
 {
@@ -40,10 +42,6 @@ struct BoxRGB
 vector<Box>boxes;
 vector<BoxRGB>rgb;
 
-void draw()
-{
-	glutSolidCube(0.9);
-}
 
 static int theta = 0;
 
@@ -107,8 +105,8 @@ void init(void)
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuseLight);		// the diffuse element
 	glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);	// place the light in the world
 
-	glutInitDisplayMode(GLUT_DEPTH);
-	glEnable(GL_DEPTH_TEST);
+	//glutInitDisplayMode(GLUT_DEPTH);
+	//glEnable(GL_DEPTH_TEST);
 	
 	glEnable(GL_LIGHT0);
 	glEnable(GL_TEXTURE_2D);					// enable 2D texturing
@@ -124,7 +122,7 @@ void init(void)
 
 	// generate the texture image
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, bitmapInfoHeader.biWidth,
-		bitmapInfoHeader.biHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, bitmapData);
+	bitmapInfoHeader.biHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, bitmapData);
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 
@@ -141,26 +139,30 @@ void init(void)
 	bitmapInfoHeader.biHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, bitmapData);
 	glBindTexture(GL_TEXTURE_2D, 0);
 	//************end of 2nd tex******************************************************8
+	//glPopMatrix();
+	///glColor3f(1.0, 0, 0);
+	// drawText("Osama Hosam's OpenGL Tutorials", 200, 200, 0);						   //
+	//glLoadIdentity();
+	//glPushMatrix();
 	
-	glPopMatrix();
-	
-	/*
-	
-	glColor3f(1.0, 0, 0);
-	drawText("Osama Hosam's OpenGL Tutorials", 200, 200, 0);						   //
-	glLoadIdentity();
-	glPushMatrix();
-	*/
 }
+/*
 void render(void)
-{
+{	
 	std::string text;
 	text = "This is a simple text.";
 	glColor3f(0, 1, 0);
 	drawText(text.data(), text.size(), 50, 200);
 	cubeSelectandLoop();
 	glPopMatrix();
+	
 }
+*/
+void draw()
+{
+	glutSolidCube(0.9);
+}
+
 void drawBox(float w, float h, float l)
 //drawBox
 //***************************************************************************
@@ -319,6 +321,7 @@ void spinSink()
 	cout << "spinSink" << endl;
 
 }
+/*
 void drawText(const char *text, int length, int x, int y)
 {
 	glMatrixMode(GL_PROJECTION);
@@ -341,20 +344,21 @@ void drawText(const char *text, int length, int x, int y)
 	glLoadMatrixd(matrix);
 	glMatrixMode(GL_MODELVIEW);
 }
+*/
 void display(void)
 {
+	
 	glPushMatrix();
-
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	//glLoadIdentity();//reset transformation (of modelview matrix)
+	
 	glColor3f(0.8, 0.8, 1.0);//set colour not used. Automatically disabled when lighting Enabled
-	
-	
 	glTranslatef(0, 0, 0);  //move by x,y and z units
 	glMaterialfv(GL_FRONT, GL_AMBIENT, matAmbient);//set backdrop material properties
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, matDiff);
 	drawBox(5.0, 10.0, 0.01);  //draw floor
 	glColor3f(1.0, 0.8, 0.8);  //set colour not used. Automatically disabled when lighting Enabled
+	
 
 	glPushMatrix(); //save current position/orientation, etc.
 	glTranslatef(0, 1.505, -5);  //move by x,y and z units
@@ -378,24 +382,20 @@ void display(void)
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, matDiff2);
 
 	glPopMatrix(); //restore previous "current" position/orientation etc.
-
-	glEnd();		   //  place camera - it rotates about the origin, on y = 5.0 plane,
+			   //  place camera - it rotates about the origin, on y = 5.0 plane,
 				  //  with a radius of 5.0; 0,0,0 - aim lens towards 0,0,0; 
 				   //  0,1,0 - the up vector defines an unique orientation
 				  // glTranslatef(0,0,0);  //move by x,y and z units
 	//glRotatef(180, 0, 0, 0);	   //drawBox(5.0, 10.0, 0.20);  //draw floor
-	
-
 	//glClear(GL_COLOR_BUFFER_BIT);
 	//glLoadIdentity();
-
-	
 	//glutSwapBuffers();
-
+	//glFlush();  //force drawing
+	glPopMatrix();
 	glFlush();  //force drawing
-
-
+	draw();
 	glutSwapBuffers();
+	//glutSwapBuffers();
 	//any errors then display error codes 
 	GLenum errCode;
 	const GLubyte *errString;
@@ -408,7 +408,9 @@ void display(void)
 
 void cubeSelectandLoop()
 {
-	glTranslatef(0, 1, 1);
+	glPopMatrix();
+	glFlush();  //force drawing
+	//glTranslatef(0, 1, 1);
 	for (int y = 0; y < GRID_HEIGHT; y++)
 	{
 		for (int x = 0; x < GRID_WIDTH; x++)
@@ -440,9 +442,10 @@ void cubeSelectandLoop()
 			draw();
 			glPopMatrix();
 		}
+		glutSwapBuffers();
 	}
-	glLoadIdentity();
-	glutPostRedisplay();
+	//glLoadIdentity();
+	//glutPostRedisplay();
 }
 void reshape(int w, int h)
 {
@@ -460,63 +463,7 @@ void reshape(int w, int h)
 	gluLookAt(7.0*sin(float(theta)*0.0175), 10.0, 7.0*cos(float(theta)*0.0175), 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
 	
 }
-/*
-void keyboard(unsigned char key, int x, int y)
-//This function alters the camera angle and x,y,z position
-// how would you alter the 'w' and 's' key equations to move
-//the camera in the direction you're looking? Hint -> needs a little bit of trig
-// and both  a vx and a vz formula will be needed in each 'w' and 's' case.
-{
-static float vx = 0, vy = 2, vz = 5, angle = 0;
-switch (key) {
 
-case 'a' | 'A':
-vx = vx - 0.1;
-glMatrixMode(GL_MODELVIEW);
-break;
-case 'd' | 'D':
-vx = vx + 0.1;
-glMatrixMode(GL_MODELVIEW);
-break;
-case 'w' | 'w':
-vz = vz - 0.1;
-glMatrixMode(GL_MODELVIEW);
-break;
-case 's' | 'S':
-glMatrixMode(GL_MODELVIEW);
-vz = vz + 0.1;
-
-break;
-case 'Z' | 'z':
-angle = angle - 10;
-
-glMatrixMode(GL_MODELVIEW);
-break;
-case 'X' | 'x':
-glMatrixMode(GL_MODELVIEW);
-angle = angle + 10;
-
-break;
-case 27:
-exit(0);
-break;
-default:
-break;
-
-}
-glLoadIdentity();
-camera(vx, vz, angle);  //use glulookat() if you want
-glutPostRedisplay();
-}
-*/
-/*
-void camera(float x, float z, float angle)
-{
-glRotatef(angle, 0, 1, 0); //not the inverse transforms and their sequence
-glTranslatef(-x, -2, -z);  //what happens if you swap the transform order
-//visualize it first then try it.
-}
-*/
 void spinDisplay(void)
 {
 	globangle = globangle + 0.1f;					// increase our rotation angle counter
@@ -531,15 +478,16 @@ int main(int argc, char** argv)
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
 	glutInitWindowSize(800, 800);
 	glutInitWindowPosition(100, 100);
+	
 	//glutCreateWindow("3D house");
 	glutCreateWindow(argv[0]);
-	glGetString(GL_VERSION);
-	glGetError();
+	//glGetString(GL_VERSION);
+	//glGetError();
 	init();
 	glutDisplayFunc(display);
 	glutReshapeFunc(reshape);
-	glutDisplayFunc(render);
 	
+	//glutDisplayFunc(render);
 	glutKeyboardFunc(keyboardread);
 	glutIdleFunc(spinDisplay);
 	glutMainLoop();

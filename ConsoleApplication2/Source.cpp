@@ -291,7 +291,7 @@ void keyboardread(unsigned char key, int x, int y)
 	case 'q':
 		if (selSwitch == true && (table[firstSel] == table[secondSel]))
 		{
-			cout << "match" << endl;
+			cout << "Match!!" << endl;
 			spinSink();
 			selSwitch = false;
 		}
@@ -321,7 +321,7 @@ void spinSink()
 	cout << "spinSink" << endl;
 
 }
-/*
+
 void drawText(const char *text, int length, int x, int y)
 {
 	glMatrixMode(GL_PROJECTION);
@@ -344,7 +344,7 @@ void drawText(const char *text, int length, int x, int y)
 	glLoadMatrixd(matrix);
 	glMatrixMode(GL_MODELVIEW);
 }
-*/
+
 void display(void)
 {
 	
@@ -385,15 +385,20 @@ void display(void)
 			   //  place camera - it rotates about the origin, on y = 5.0 plane,
 				  //  with a radius of 5.0; 0,0,0 - aim lens towards 0,0,0; 
 				   //  0,1,0 - the up vector defines an unique orientation
-				  // glTranslatef(0,0,0);  //move by x,y and z units
+	glPushMatrix();
+	cubeSelectandLoop();
+	glPopMatrix();
+	// glTranslatef(0,0,0);  //move by x,y and z units
 	//glRotatef(180, 0, 0, 0);	   //drawBox(5.0, 10.0, 0.20);  //draw floor
 	//glClear(GL_COLOR_BUFFER_BIT);
 	//glLoadIdentity();
 	//glutSwapBuffers();
+	
 	//glFlush();  //force drawing
 	glPopMatrix();
 	glFlush();  //force drawing
-	draw();
+	
+	
 	glutSwapBuffers();
 	//glutSwapBuffers();
 	//any errors then display error codes 
@@ -409,7 +414,7 @@ void display(void)
 void cubeSelectandLoop()
 {
 	glPopMatrix();
-	glFlush();  //force drawing
+	//glFlush();  //force drawing
 	//glTranslatef(0, 1, 1);
 	for (int y = 0; y < GRID_HEIGHT; y++)
 	{

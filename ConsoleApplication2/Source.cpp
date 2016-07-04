@@ -26,9 +26,9 @@ void drawBox(float w, float h, float l);
 void reshape(int w, int h);
 void spinSink();
 void cubeSelectandLoop();
-
+void gameOver();
 void drawText(const char *text, int length, int x, int y);
-void render(void);
+
 
 struct Box
 {
@@ -49,6 +49,8 @@ int table[16] = { 1,2,3,4,5,6,7,8,1,2,3,4,5,6,7,8 };
 int firstSel = 0;
 int secondSel = -1;
 bool selSwitch = false;
+int failCount = 0;
+int matchCount = 0;
 ////// Lighting variables
 float ambientLight[] = { 1.0f, 1.0f, 1.0f, 1.0f };	// ambient light
 float diffuseLight[] = { 1.0f, 1.0f, 1.0f, 1.0f };	// diffuse light
@@ -108,6 +110,9 @@ void init(void)
 	//glutInitDisplayMode(GLUT_DEPTH);
 	//glEnable(GL_DEPTH_TEST);
 	
+
+	glPopMatrix();
+	
 	glEnable(GL_LIGHT0);
 	glEnable(GL_TEXTURE_2D);					// enable 2D texturing
 
@@ -142,18 +147,38 @@ void init(void)
 	
 	
 }
-/*
-void render(void)
-{	
-	std::string text;
-	text = "This is a simple text.";
-	glColor3f(0, 1, 0);
-	drawText(text.data(), text.size(), 50, 200);
-	cubeSelectandLoop();
-	glPopMatrix();
-	
+void winCondition(void)
+{
+	//glPushMatrix();
+	if (matchCount == 8)
+	{
+
+		std::string text;
+		text = "YOU WIN!";
+		glColor3f(0, 1, 0);
+		drawText(text.data(), text.size(), 50, 200);
+
+		//glPopMatrix();
+		//cubeSelectandLoop();
+	}
 }
-*/
+
+void gameOver(void)
+{
+	//glPushMatrix();
+	if(failCount== 10)
+	{
+		
+		std::string text;
+		text = "GAME OVER!";
+		glColor3f(0, 1, 0);
+		drawText(text.data(), text.size(), 50, 200);
+		
+		//glPopMatrix();
+		//cubeSelectandLoop();
+	}
+}
+
 void draw()
 {
 	glutSolidCube(0.9);
@@ -191,6 +216,7 @@ void drawBox(float w, float h, float l)
 	glTexCoord2f(1.0f, 1.0f); glVertex3f(w, -l, -h);
 	glTexCoord2f(0.0f, 1.0f); glVertex3f(w, l, -h);
 	glEnd();
+	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, texnum[0]);       // enable our first texture object
 	glBegin(GL_POLYGON);
 	glNormal3f(-1.0f, 0.0f, 0.0f);	// left face
@@ -233,12 +259,12 @@ void keyboardread(unsigned char key, int x, int y)
 		if (selSwitch == false)
 		{
 			firstSel = firstSel + 1;
-			cout << "first sel is" << firstSel << endl;
+			//cout << "first sel is" << firstSel << endl;
 		}
 		else
 		{
 			secondSel = secondSel + 1;
-			cout << "second sel is" << secondSel << endl;
+			//cout << "second sel is" << secondSel << endl;
 		}
 		glutPostRedisplay();
 		break;
@@ -246,12 +272,12 @@ void keyboardread(unsigned char key, int x, int y)
 		if (selSwitch == false)
 		{
 			firstSel = firstSel - 1;
-			cout << "first sel is" << firstSel << endl;
+			//cout << "first sel is" << firstSel << endl;
 		}
 		else
 		{
 			secondSel = secondSel - 1;
-			cout << "second sel is" << secondSel << endl;
+			//cout << "second sel is" << secondSel << endl;
 		}
 		glutPostRedisplay();
 		break;
@@ -259,12 +285,12 @@ void keyboardread(unsigned char key, int x, int y)
 		if (selSwitch == false)
 		{
 			firstSel = firstSel - 4;
-			cout << "first sel is" << firstSel << endl;
+			//cout << "first sel is" << firstSel << endl;
 		}
 		else
 		{
 			secondSel = secondSel - 4;
-			cout << "second sel is" << secondSel << endl;
+			//cout << "second sel is" << secondSel << endl;
 		}
 		glutPostRedisplay();
 		break;
@@ -272,12 +298,12 @@ void keyboardread(unsigned char key, int x, int y)
 		if (selSwitch == false)
 		{
 			firstSel = firstSel + 4;
-			cout << "first sel is" << firstSel << endl;
+			//cout << "first sel is" << firstSel << endl;
 		}
 		else
 		{
 			secondSel = secondSel + 4;
-			cout << "second sel is" << secondSel << endl;
+			//cout << "second sel is" << secondSel << endl;
 		}
 		glutPostRedisplay();
 		break;
@@ -288,13 +314,34 @@ void keyboardread(unsigned char key, int x, int y)
 		if (selSwitch == true && (table[firstSel] == table[secondSel]))
 		{
 			cout << "Match!!" << endl;
-			spinSink();
+			
+			//spinSink();
+			glColor3f(0, 0, 0);
+			matchCount = matchCount++;
+			winCondition();
 			selSwitch = false;
+			cout << "Score: " << matchCount << endl;
+			if (matchCount == 8)
+			{
+				cout << "You Win!!" << endl;
+				
+			}
+			
 		}
 		else
 		{
+			failCount = failCount ++;
 			cout << "Fail!!" << endl;
+			
+				gameOver();
+				cout << "Times Failed: " << failCount << endl;
+				if (failCount == 10)
+				{
+					cout << "GAME OVER!" << endl;
+					
+				}
 		}
+		
 		break;
 	}
 	firstSel = firstSel % 16;
@@ -317,7 +364,7 @@ void spinSink()
 	cout << "spinSink" << endl;
 
 }
-
+//https://rbellek.wordpress.com/2011/03/05/51/#comments
 void drawText(const char *text, int length, int x, int y)
 {
 	glMatrixMode(GL_PROJECTION);
@@ -376,33 +423,16 @@ void display(void)
 	glTranslatef(0, 1, 0);  //move by x,y and z units
 	glMaterialfv(GL_FRONT, GL_AMBIENT, matAmbient2);//set box light material properties
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, matDiff2);
-	//glRotatef(globangle, 1, 1, 1);
+	glRotatef(globangle, 1, 1, 1);
 	//glEnd();
-	//drawBox(1, 1, 1);  //draw box
+	drawBox(1, 1, 1);  //draw box
 	glPopMatrix(); //restore previous "current" position/orientation etc.
 			   //  place camera - it rotates about the origin, on y = 5.0 plane,
 				  //  with a radius of 5.0; 0,0,0 - aim lens towards 0,0,0; 
 				   //  0,1,0 - the up vector defines an unique orientation
-	//glEnd();
-	//glPopMatrix();
 	
-	//cubeSelectandLoop();
-	//glPushMatrix();
-	//cubeSelectandLoop();
-	//glPopMatrix();
-	// glTranslatef(0,0,0);  //move by x,y and z units
-	//glRotatef(180, 0, 0, 0);	   //drawBox(5.0, 10.0, 0.20);  //draw floor
-	//glClear(GL_COLOR_BUFFER_BIT);
-	//glLoadIdentity();
-	//glutSwapBuffers();
-	
-	//glFlush();  //force drawing
-	//glPopMatrix();
-	//glFlush();  //force drawing
 	cubeSelectandLoop();
 	
-	
-	//glutSwapBuffers();
 	//any errors then display error codes 
 	GLenum errCode;
 	const GLubyte *errString;
@@ -452,8 +482,7 @@ void cubeSelectandLoop()
 		}
 		//glutSwapBuffers();
 	}
-	//glLoadIdentity();
-	//glutPostRedisplay();
+
 }
 void reshape(int w, int h)
 {
@@ -469,6 +498,7 @@ void reshape(int w, int h)
 	//gluLookAt(7.0, 10.0, 7.0, 0.0, 0.0, -1.0, 0.0, 1.0, 0.0);// note these match the initial values 
 	//of the keybard fn vx,vy,vz, angle
 	gluLookAt(7.0*sin(float(theta)*0.0175), 10.0, 7.0*cos(float(theta)*0.0175), 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+	
 	
 }
 

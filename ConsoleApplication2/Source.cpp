@@ -27,6 +27,7 @@ void reshape(int w, int h);
 void spinSink();
 void cubeSelectandLoop();
 void gameOver();
+void winCondition();
 void drawText(const char *text, int length, int x, int y);
 
 
@@ -120,7 +121,7 @@ void init(void)
 	static GLuint share;
 	static GLuint checkers;
 	glGenTextures(2, texnum);                  // generate 2 texture objects
-	glBindTexture(GL_TEXTURE_2D, share);    // enable our first texture object
+	glBindTexture(GL_TEXTURE_2D, texnum[0]);    // enable our first texture object
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -423,9 +424,9 @@ void display(void)
 	glTranslatef(0, 1, 0);  //move by x,y and z units
 	glMaterialfv(GL_FRONT, GL_AMBIENT, matAmbient2);//set box light material properties
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, matDiff2);
-	glRotatef(globangle, 1, 1, 1);
+	//glRotatef(globangle, 1, 1, 1);
 	//glEnd();
-	drawBox(1, 1, 1);  //draw box
+	//drawBox(1, 1, 1);  //draw box
 	glPopMatrix(); //restore previous "current" position/orientation etc.
 			   //  place camera - it rotates about the origin, on y = 5.0 plane,
 				  //  with a radius of 5.0; 0,0,0 - aim lens towards 0,0,0; 
@@ -458,6 +459,8 @@ void cubeSelectandLoop()
 
 			if (firstSel == (y * 4 + x))
 			{
+				
+				glRotatef(globangle, 1, 1, 1);
 				glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular1);
 				glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess1);
 				glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_diffuse1);
@@ -465,6 +468,8 @@ void cubeSelectandLoop()
 			}
 			else if (secondSel == (y * 4 + x))
 			{
+				
+				glRotatef(globangle, 1, 1, 1);
 				glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular1);
 				glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess1);
 				glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_diffuse1);
@@ -472,6 +477,7 @@ void cubeSelectandLoop()
 			}
 			else
 			{
+				
 				glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
 				glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
 				glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_diffuse);

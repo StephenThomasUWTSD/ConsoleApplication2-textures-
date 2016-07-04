@@ -148,6 +148,18 @@ void init(void)
 	
 	
 }
+void cubeColours()
+{
+	int red = 1;
+	int blue = 2;
+	int green = 3;
+	int black = 4;
+	int white = 5;
+	int purple = 6;
+	int yellow = 7;
+	int orange = 8;
+	
+}
 void winCondition(void)
 {
 	//glPushMatrix();

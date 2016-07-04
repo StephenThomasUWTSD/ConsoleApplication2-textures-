@@ -45,7 +45,14 @@ vector<BoxRGB>rgb;
 
 
 static int theta = 0;
-
+const int red = 1;
+const int blue = 2;
+const int green = 3;
+const int black = 4;
+const int white = 5;
+const int purple = 6;
+const int yellow = 7;
+const int orange = 8;
 int table[16] = { 1,2,3,4,5,6,7,8,1,2,3,4,5,6,7,8 };
 int firstSel = 0;
 int secondSel = -1;
@@ -150,14 +157,7 @@ void init(void)
 }
 void cubeColours()
 {
-	int red = 1;
-	int blue = 2;
-	int green = 3;
-	int black = 4;
-	int white = 5;
-	int purple = 6;
-	int yellow = 7;
-	int orange = 8;
+	
 	
 }
 void winCondition(void)

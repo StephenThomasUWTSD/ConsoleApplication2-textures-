@@ -139,11 +139,7 @@ void init(void)
 	bitmapInfoHeader.biHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, bitmapData);
 	glBindTexture(GL_TEXTURE_2D, 0);
 	//************end of 2nd tex******************************************************8
-	//glPopMatrix();
-	///glColor3f(1.0, 0, 0);
-	// drawText("Osama Hosam's OpenGL Tutorials", 200, 200, 0);						   //
-	//glLoadIdentity();
-	//glPushMatrix();
+	
 	
 }
 /*
@@ -420,7 +416,7 @@ void display(void)
 
 void cubeSelectandLoop()
 {
-	//glPopMatrix();
+	glPopMatrix();
 	//glFlush();  //force drawing
 	//glTranslatef(0, 1, 1);
 	for (int y = 0; y < GRID_HEIGHT; y++)

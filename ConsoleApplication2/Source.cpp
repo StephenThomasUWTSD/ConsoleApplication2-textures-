@@ -380,14 +380,20 @@ void display(void)
 	glTranslatef(0, 1, 0);  //move by x,y and z units
 	glMaterialfv(GL_FRONT, GL_AMBIENT, matAmbient2);//set box light material properties
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, matDiff2);
-
+	//glRotatef(globangle, 1, 1, 1);
+	//glEnd();
+	//drawBox(1, 1, 1);  //draw box
 	glPopMatrix(); //restore previous "current" position/orientation etc.
 			   //  place camera - it rotates about the origin, on y = 5.0 plane,
 				  //  with a radius of 5.0; 0,0,0 - aim lens towards 0,0,0; 
 				   //  0,1,0 - the up vector defines an unique orientation
-	glPushMatrix();
-	cubeSelectandLoop();
-	glPopMatrix();
+	//glEnd();
+	//glPopMatrix();
+	
+	//cubeSelectandLoop();
+	//glPushMatrix();
+	//cubeSelectandLoop();
+	//glPopMatrix();
 	// glTranslatef(0,0,0);  //move by x,y and z units
 	//glRotatef(180, 0, 0, 0);	   //drawBox(5.0, 10.0, 0.20);  //draw floor
 	//glClear(GL_COLOR_BUFFER_BIT);
@@ -395,11 +401,11 @@ void display(void)
 	//glutSwapBuffers();
 	
 	//glFlush();  //force drawing
-	glPopMatrix();
-	glFlush();  //force drawing
+	//glPopMatrix();
+	//glFlush();  //force drawing
+	cubeSelectandLoop();
 	
 	
-	glutSwapBuffers();
 	//glutSwapBuffers();
 	//any errors then display error codes 
 	GLenum errCode;
@@ -409,11 +415,12 @@ void display(void)
 		errString = gluErrorString(errCode);
 		fprintf(stderr, "OpenGL error : %s\n", errString);
 	}
+	glutSwapBuffers();
 }
 
 void cubeSelectandLoop()
 {
-	glPopMatrix();
+	//glPopMatrix();
 	//glFlush();  //force drawing
 	//glTranslatef(0, 1, 1);
 	for (int y = 0; y < GRID_HEIGHT; y++)
@@ -447,7 +454,7 @@ void cubeSelectandLoop()
 			draw();
 			glPopMatrix();
 		}
-		glutSwapBuffers();
+		//glutSwapBuffers();
 	}
 	//glLoadIdentity();
 	//glutPostRedisplay();

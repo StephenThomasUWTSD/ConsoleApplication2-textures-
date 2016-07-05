@@ -12,7 +12,7 @@ using namespace std;
 ////// Texture Information
 BITMAPINFOHEADER bitmapInfoHeader;	// bitmap info header (needs windows.h to define type
 unsigned char*bitmapData;			// the texture data
-static GLuint texnum[2];// array of 2 texture object names
+static GLuint texnum[10];// array of 2 texture object names
 float globangle = 0;
 unsigned char *LoadBitmapFile(char *filename, BITMAPINFOHEADER *bitmapInfoHeader);
 
@@ -53,7 +53,9 @@ const int white = 5;
 const int purple = 6;
 const int yellow = 7;
 const int orange = 8;
-int table[16] = { 1,2,3,4,5,6,7,8,1,2,3,4,5,6,7,8 };
+
+int table[16] = { red,blue,green,black,white,purple,yellow,orange,red,blue,green,black,white,purple,yellow,orange };
+//int table[16] = { 1,2,3,4,5,6,7,8,1,2,3,4,5,6,7,8 };
 int firstSel = 0;
 int secondSel = -1;
 bool selSwitch = false;
@@ -96,7 +98,7 @@ void init(void)
 	glFrontFace(GL_CCW);
 	glEnable(GL_SMOOTH);
 	glEnable(GL_LIGHTING);
-	//GLfloat light_position[] = { 5.0, 4.0, 5.0, 0.0 };
+	GLfloat light_position[] = { 5.0, 4.0, 5.0, 0.0 };
 
 	//glClearColor(0.9, 0.8, 0.9, 0.0);  //reset "empty" background colour
 
@@ -127,7 +129,8 @@ void init(void)
 	bitmapData = LoadBitmapFile("share.bmp", &bitmapInfoHeader);//load our bitmap
 	static GLuint share;
 	static GLuint checkers;
-	glGenTextures(2, texnum);                  // generate 2 texture objects
+	glGenTextures(10, texnum);  // generate 2 texture objects
+
 	glBindTexture(GL_TEXTURE_2D, texnum[0]);    // enable our first texture object
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -150,15 +153,144 @@ void init(void)
 	// generate the texture image
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, bitmapInfoHeader.biWidth,
 	bitmapInfoHeader.biHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, bitmapData);
-	glBindTexture(GL_TEXTURE_2D, 0);
+	glBindTexture(GL_TEXTURE_2D, 1);
 	//************end of 2nd tex******************************************************8
+	//3rd texture********************************************************8
+
+	bitmapData = LoadBitmapFile("red.bmp", &bitmapInfoHeader);
+
+
+	glBindTexture(GL_TEXTURE_2D, texnum[table[red]]);// enable our third texture object
 	
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	// generate the texture image
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, bitmapInfoHeader.biWidth,
+		bitmapInfoHeader.biHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, bitmapData);
+	//glBindTexture(GL_TEXTURE_2D, texnum[table[red]]);
+	glBindTexture(GL_TEXTURE_2D, red);
 	
+	//free(table[0]);
+	//************end of 3rd tex******************************************************8
+	//4th texture********************************************************8
+
+	bitmapData = LoadBitmapFile("green.bmp", &bitmapInfoHeader);
+
+
+	glBindTexture(GL_TEXTURE_2D, texnum[table[green]]);       // enable our third texture object
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	// generate the texture image
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, bitmapInfoHeader.biWidth,
+		bitmapInfoHeader.biHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, bitmapData);
+	//glBindTexture(GL_TEXTURE_2D, texnum[table[green]]);
+	glBindTexture(GL_TEXTURE_2D, green);
+	//glFlush();
+
+	//************end of 3rd tex******************************************************8
+	//4th texture********************************************************8
+
+	bitmapData = LoadBitmapFile("blue.bmp", &bitmapInfoHeader);
+
+
+	glBindTexture(GL_TEXTURE_2D, texnum[table[blue]]);       // enable our third texture object
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	// generate the texture image
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, bitmapInfoHeader.biWidth,
+		bitmapInfoHeader.biHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, bitmapData);
+	//glBindTexture(GL_TEXTURE_2D, texnum[table[blue]]);
+	glBindTexture(GL_TEXTURE_2D, blue);
+	//glFlush();
+
+	//************end of 3rd tex******************************************************8
+	//4th texture********************************************************8
+
+	bitmapData = LoadBitmapFile("black.bmp", &bitmapInfoHeader);
+
+
+	glBindTexture(GL_TEXTURE_2D, texnum[table[black]]);       // enable our third texture object
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	// generate the texture image
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, bitmapInfoHeader.biWidth,
+		bitmapInfoHeader.biHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, bitmapData);
+	//glBindTexture(GL_TEXTURE_2D, texnum[table[black]]);
+	glBindTexture(GL_TEXTURE_2D, black);
+	//glFlush();
+
+	//************end of 3rd tex******************************************************8
+	//4th texture********************************************************8
+
+	bitmapData = LoadBitmapFile("white.bmp", &bitmapInfoHeader);
+
+
+	glBindTexture(GL_TEXTURE_2D, texnum[table[white]]);       // enable our third texture object
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	// generate the texture image
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, bitmapInfoHeader.biWidth,
+		bitmapInfoHeader.biHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, bitmapData);
+	//glBindTexture(GL_TEXTURE_2D, texnum[table[white]]);
+	glBindTexture(GL_TEXTURE_2D, white);
+	//glFlush();
+
+	//************end of 3rd tex******************************************************8
+	//4th texture********************************************************8
+
+	bitmapData = LoadBitmapFile("purple.bmp", &bitmapInfoHeader);
+
+
+	glBindTexture(GL_TEXTURE_2D, texnum[table[purple]]);       // enable our third texture object
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	// generate the texture image
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, bitmapInfoHeader.biWidth,
+		bitmapInfoHeader.biHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, bitmapData);
+	//glBindTexture(GL_TEXTURE_2D, texnum[table[purple]]);
+	glBindTexture(GL_TEXTURE_2D,purple);
+	//glFlush();
+
+	//************end of 3rd tex******************************************************8
+	//4th texture********************************************************8
+
+	bitmapData = LoadBitmapFile("yellow.bmp", &bitmapInfoHeader);
+
+
+	glBindTexture(GL_TEXTURE_2D, texnum[table[yellow]]);       // enable our third texture object
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	// generate the texture image
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, bitmapInfoHeader.biWidth,
+		bitmapInfoHeader.biHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, bitmapData);
+	//glBindTexture(GL_TEXTURE_2D, texnum[table[yellow]]);
+	glBindTexture(GL_TEXTURE_2D, yellow);
+	//glFlush();
+
+	//************end of 3rd tex******************************************************8
+	//4th texture********************************************************8
+
+	bitmapData = LoadBitmapFile("orange.bmp", &bitmapInfoHeader);
+
+
+	glBindTexture(GL_TEXTURE_2D, texnum[table[orange]]);       // enable our third texture object
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	// generate the texture image
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, bitmapInfoHeader.biWidth,
+		bitmapInfoHeader.biHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, bitmapData);
+	//glBindTexture(GL_TEXTURE_2D, texnum[table[orange]]);
+	glBindTexture(GL_TEXTURE_2D, orange);
+	//glFlush();
+
+	//************end of 3rd tex******************************************************8
+
 }
-void cubeColours()
+void cubeColours(int table)
 {
 	
-	
+	// red glColor3d(255, 0, 0);
+	  
 }
 void winCondition(void)
 {
@@ -194,10 +326,67 @@ void gameOver(void)
 
 void draw()
 {
-	glutSolidCube(0.9);
+	drawBox(0.9,0.9,0.9);
 }
 
 void drawBox(float w, float h, float l)
+//drawBox
+//***************************************************************************
+//This function first translates a further x,y,z units then draws a box of
+//width w, height h, length l
+{
+	//glRotatef(90,0,0,0);
+	glPushMatrix();       //save modelview 
+	w = w / 2.0; h = h / 2.0; l = l / 2.0; //adjust values so centre is in middle of box
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, texnum[1]);       // enable our second texture object
+	glBegin(GL_POLYGON);
+	glNormal3f(0.0f, 1.0f, 0.0f);	// top face
+	glTexCoord2f(0.0f, 0.0f); glVertex3f(w, l, h);
+	glTexCoord2f(1.0f, 0.0f); glVertex3f(w, l, -h);
+	glTexCoord2f(1.0f, 1.0f); glVertex3f(-w, l, -h);
+	glTexCoord2f(0.0f, 1.0f); glVertex3f(-w, l, h);
+	glEnd();
+	glBegin(GL_POLYGON);
+	glNormal3f(0.0f, 0.0f, 1.0f);	// front face
+	glTexCoord2f(0.0f, 0.0f); glVertex3f(w, l, h);
+	glTexCoord2f(1.0f, 0.0f); glVertex3f(-w, l, h);
+	glTexCoord2f(1.0f, 1.0f); glVertex3f(-w, -l, h);
+	glTexCoord2f(0.0f, 1.0f); glVertex3f(w, -l, h);
+	glEnd();
+	glBegin(GL_POLYGON);
+	glNormal3f(1.0f, 0.0f, 0.0f);	// right face
+	glTexCoord2f(0.0f, 0.0f); glVertex3f(w, l, h);
+	glTexCoord2f(1.0f, 0.0f); glVertex3f(w, -l, h);
+	glTexCoord2f(1.0f, 1.0f); glVertex3f(w, -l, -h);
+	glTexCoord2f(0.0f, 1.0f); glVertex3f(w, l, -h);
+	glEnd();
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, texnum[0]);       // enable our first texture object
+	glBegin(GL_POLYGON);
+	glNormal3f(-1.0f, 0.0f, 0.0f);	// left face
+	glTexCoord2f(0.0f, 0.0f); glVertex3f(-w, l, h);
+	glTexCoord2f(1.0f, 0.0f); glVertex3f(-w, l, -h);
+	glTexCoord2f(1.0f, 1.0f); glVertex3f(-w, -l, -h);
+	glTexCoord2f(0.0f, 1.0f); glVertex3f(-w, -l, h);
+	glEnd();
+	glBegin(GL_POLYGON);
+	glNormal3f(0.0f, -1.0f, 0.0f);	// bottom face
+	glTexCoord2f(0.0f, 0.0f); glVertex3f(-w, -l, h);
+	glTexCoord2f(1.0f, 0.0f); glVertex3f(-w, -l, -h);
+	glTexCoord2f(1.0f, 1.0f); glVertex3f(w, -l, -h);
+	glTexCoord2f(0.0f, 1.0f); glVertex3f(w, -l, h);
+	glEnd();
+	glBegin(GL_POLYGON);
+	glNormal3f(0.0f, 0.0f, -1.0f);	// back face
+	glTexCoord2f(0.0f, 0.0f); glVertex3f(w, -l, -h);
+	glTexCoord2f(1.0f, 0.0f); glVertex3f(-w, -l, -h);
+	glTexCoord2f(1.0f, 1.0f); glVertex3f(-w, l, -h);
+	glTexCoord2f(0.0f, 1.0f); glVertex3f(w, l, -h);
+	glEnd();
+	glPopMatrix();   //restore previous modelview matrix so leaving things as you found them 
+}
+void drawCube(float w, float h, float l)
 //drawBox
 //***************************************************************************
 //This function first translates a further x,y,z units then draws a box of
@@ -422,7 +611,7 @@ void display(void)
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, matDiff1);
 	drawBox(5, 0.01, 3);  //draw back drop
 	glPopMatrix(); //restore previous "current" position/orientation etc.
-				   
+		/*		   
 	glColor3f(0.8, 1.0, 0.8);  //set colour not used. Automatically disabled when lighting Enabled
 	glPushMatrix(); //save current position/orientation, etc.
 	glTranslatef(1, 1, 1);  //move by x,y and z units
@@ -430,7 +619,7 @@ void display(void)
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, matDiff1);
 	glutSolidTeapot(0.2); //param is size of teapot
 	glPopMatrix(); //restore previous "current" position/orientation etc.
-				   
+			*/	   
 	glColor3f(0.4, 1.0, 1.0);  //set colour not used. Automatically disabled when lighting Enabled
 	glPushMatrix(); //save current position/orientation, etc.
 	glTranslatef(0, 1, 0);  //move by x,y and z units
@@ -468,7 +657,7 @@ void cubeSelectandLoop()
 		{
 			glPushMatrix();
 			glTranslatef(1.0*x, 0.0, 1.0*y);
-
+			
 			if (firstSel == (y * 4 + x))
 			{
 				
